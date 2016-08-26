@@ -1,15 +1,11 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * Created by PhpStorm.
- * User: normeno
- * Date: 26-08-16
- * Time: 18:42
- */
-class Home extends MX_Controller
+class Home extends MY_Controller
 {
     public function index()
     {
-        echo 'test';
+        echo $this->router->fetch_module();
+        echo $this->blade->view()->make('main')->render();
     }
 }
