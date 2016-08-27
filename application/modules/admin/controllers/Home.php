@@ -5,7 +5,6 @@ class Home extends MY_Controller
 {
     public function index()
     {
-        echo $this->router->fetch_module();
-        echo $this->blade->view()->make('main')->render();
+        echo $this->blade->view()->make('home.index')->render();
     }
 }
