@@ -8,7 +8,9 @@ class Admin_Controller extends MY_Controller
         parent::__construct();
 
         $this->load->library([
-            'form_validation'
+            'session',
+            'form_validation',
+            'ion_auth'
         ]);
 
         $this->load->helper([
@@ -19,7 +21,7 @@ class Admin_Controller extends MY_Controller
     protected function render_view($view, $data)
     {
         echo $this->blade
-                ->view()->make($view, compact($data))
+                ->view()->make($view, $data)
                 ->render();
     }
 }

@@ -12,7 +12,7 @@
             <a href="{{ site_url('home') }}"><b>Admin</b>LTE</a>
         </div>
 
-        @if (validation_errors())
+        @if (validation_errors() || isset($errors))
             @include('partials.error_validation')
         @endif
 
@@ -22,7 +22,7 @@
                 <input type="hidden" name="_token" value="">
 
                 <div class="form-group has-feedback">
-                    {!! form_input(['type' => 'email', 'class' => 'form-control', 'name' => 'email', 'placeholder' => 'Email']) !!}
+                    {!! form_input(['type' => 'email', 'class' => 'form-control', 'name' => 'identity', 'placeholder' => 'Email']) !!}
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
 
