@@ -8,6 +8,7 @@
       fixed layout. -->
 
 <script src="assets/bower/alertify.js/lib/alertify.min.js" type="text/javascript"></script>
+<script src="assets/bower/imagelightbox/dist/imagelightbox.min.js" type="text/javascript"></script>
 
 <script>
     <?php $notify = $ci->session->userdata('notify'); ?>
@@ -28,7 +29,15 @@
                 var img = document.createElement('img');
                 img.src = e.target.result;
                 img.style.maxWidth = '100%';
-                $(".container-"+input.id).append(img);
+                img.id = input.id+'-preview';
+
+                var a = document.createElement('a');
+                a.href = e.target.result;
+                a.setAttribute('data-imagelightbox', input.id+'-preview');
+
+                a.appendChild(img);
+
+                $(".container-"+input.id).append(a);
             }
 
             reader.readAsDataURL(input.files[0]);

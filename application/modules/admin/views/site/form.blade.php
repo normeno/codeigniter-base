@@ -47,8 +47,14 @@
 
 @push('scripts')
 <script>
-    $("#logo").change(function(){
-        readURL(this);
+    $( function()
+    {
+        $("#logo").change(function(){
+            readURL(this);
+            var gallery = $('a[data-imagelightbox="logo-preview"]').imageLightbox();
+            var image = $( '<img />' );
+            gallery.addToImageLightbox( image );
+        });
     });
 </script>
 @endpush

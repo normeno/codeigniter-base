@@ -24,6 +24,7 @@
 
 <link href="assets/bower/alertify.js/themes/alertify.core.css" rel="stylesheet" type="text/css" />
 <link href="assets/bower/alertify.js/themes/alertify.bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="assets/bower/imagelightbox/dist/imagelightbox.min.css" rel="stylesheet" type="text/css" />
 
 <style>
     .container {
