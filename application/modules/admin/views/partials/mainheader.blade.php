@@ -108,24 +108,24 @@
                         <!-- The user image in the navbar-->
                         <img src="//lorempixel.com/100/100" class="user-image" alt="User Image"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">Username</span>
+                        <span class="hidden-xs">{{ "{$current_user->first_name} {$current_user->last_name}" }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
                             <img src="//lorempixel.com/100/100" class="img-circle" alt="User Image" />
                             <p>
-                                Username
-                                <small>Msg Nov. 2012</small>
+                                {{ "{$current_user->first_name} {$current_user->last_name}" }}
+                                <small>Miembro desde {{ gmdate("d-m-Y", $current_user->created_on) }}</small>
                             </p>
                         </li>
 
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{ site_url("admin/administrator/edit/{$current_user->id}") }}" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{ site_url('logout') }}" class="btn btn-default btn-flat">Logout</a>
+                                <a href="{{ site_url('admin/logout') }}" class="btn btn-default btn-flat">Logout</a>
                             </div>
                         </li>
                     </ul>

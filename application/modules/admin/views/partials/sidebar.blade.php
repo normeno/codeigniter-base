@@ -7,7 +7,7 @@
                 <img src="//lorempixel.com/100/100" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
-                <p>Username</p>
+                <p>{{ "{$current_user->first_name} {$current_user->last_name}" }}</p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
@@ -27,12 +27,11 @@
 
             <li class="treeview">
                 <a href="#">
-                    <i class='fa fa-smile-o'></i> <span>Second Level</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class='fa fa-users'></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">One</a></li>
-                    <li><a href="#">Two</a></li>
-                    <li><a href="#">Three</a></li>
+                    <li><a href="{{ site_url('admin/administrator') }}">Administrators</a></li>
+                    <li><a href="{{ site_url('admin/user') }}">Users</a></li>
                 </ul>
             </li>
         </ul>

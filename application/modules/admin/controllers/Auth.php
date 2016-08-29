@@ -16,13 +16,17 @@ class Auth extends Admin_Controller
             $remember = $this->input->post('remember', true);
 
             if ($this->ion_auth->login($identity, $password, $remember)) {
-                $messages = $this->ion_auth->messages();
-                //redirect('admin');
-                echo 'success';
+                redirect('admin');
             } else {
                 $errors =  $this->ion_auth->errors();
                 $this->render_view('auth.login', ['errors' => $errors]);
             }
         }
+    }
+
+    public function logout()
+    {
+        $this->ion_auth->logout();
+        redirect('admin/login', 'refresh');
     }
 }

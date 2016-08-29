@@ -14,14 +14,38 @@ class Admin_Controller extends MY_Controller
         ]);
 
         $this->load->helper([
-           'form'
+            'form',
+            'security'
         ]);
     }
 
     protected function render_view($view, $data)
     {
+        $data['csrf'] = $this->gen_csrf();
+        $data['current_user'] = $this->current_user();
+
         echo $this->blade
                 ->view()->make($view, $data)
                 ->render();
+    }
+
+    protected function valid_user()
+    {
+        return $this->ion_auth->user()->row();
+    }
+
+    protected function gen_csrf()
+    {
+        $csrf = [
+            'name' => $this->security->get_csrf_token_name(),
+            'hash' => $this->security->get_csrf_hash()
+        ];
+
+        return $csrf;
+    }
+
+    protected function current_user()
+    {
+        return $this->ion_auth->user()->row();
     }
 }
