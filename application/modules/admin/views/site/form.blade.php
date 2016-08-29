@@ -24,8 +24,8 @@
 
         <div class="form-group">
             <label for="logo" class="col-sm-2 control-label">Logo</label>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" name="logo" id="logo" placeholder="Logo" value="{{ set_value('logo', isset($settings) ? $settings->logo : '') }}">
+            <div class="col-sm-5 container-logo">
+                <input type="file" class="form-control" name="logo" id="logo" placeholder="Logo" value="{{ set_value('logo', isset($settings) ? $settings->logo : '') }}">
             </div>
         </div>
 
@@ -44,3 +44,11 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    $("#logo").change(function(){
+        readURL(this);
+    });
+</script>
+@endpush
