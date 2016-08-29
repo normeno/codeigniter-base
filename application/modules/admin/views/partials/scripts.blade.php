@@ -7,4 +7,18 @@
       user experience. Slimscroll is required when using the
       fixed layout. -->
 
+<script src="assets/bower/alertify.js/lib/alertify.min.js" type="text/javascript"></script>
+
+<script>
+    <?php $notify = $ci->session->userdata('notify'); ?>
+
+    @if (isset($notify) && $notify['status'] === 'success' )
+        alertify.success("{{ $notify['msg'] }}");
+    @elseif (isset($notify) && $notify['status'] === 'error' )
+        alertify.error("{{ $notify['msg'] }}");
+    @endif
+
+    <?php $ci->session->unset_userdata('notify'); ?>
+</script>
+
 @stack('scripts')

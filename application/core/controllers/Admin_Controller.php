@@ -8,7 +8,6 @@ class Admin_Controller extends MY_Controller
         parent::__construct();
 
         $this->load->library([
-            'session',
             'form_validation',
             'ion_auth'
         ]);
@@ -21,6 +20,7 @@ class Admin_Controller extends MY_Controller
 
     protected function render_view($view, $data)
     {
+        $data['ci'] = get_instance();
         $data['csrf'] = $this->gen_csrf();
         $data['current_user'] = $this->current_user();
         $data['sidebar'] = $this->session->userdata('sidebar');

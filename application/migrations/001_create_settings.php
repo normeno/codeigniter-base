@@ -17,7 +17,7 @@ class Migration_Create_settings extends CI_Migration
                 'constraint' => '10',
                 'null' => false,
             ],
-            'long_name' => [
+            'full_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '25',
                 'null' => false,
@@ -32,6 +32,11 @@ class Migration_Create_settings extends CI_Migration
                 'constraint' => '25',
                 'null' => true,
             ],
+            'contact_email' => [
+                'type' => 'VARCHAR',
+                'constraint' => '30',
+                'null' => true,
+            ],
         ]);
 
         $this->dbforge->add_key('id', true);
@@ -40,9 +45,10 @@ class Migration_Create_settings extends CI_Migration
 
         $data = [
             'short_name' => 'Krei',
-            'long_name' => 'Krei',
+            'full_name' => 'Krei',
             'logo' => null,
-            'website' => 'http://www.krei.cl'
+            'website' => 'http://www.krei.cl',
+            'contact_email' => 'hola@krei.cl'
         ];
 
         $this->db->insert('settings', $data);

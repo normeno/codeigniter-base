@@ -22,6 +22,9 @@
 <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<link href="assets/bower/alertify.js/themes/alertify.core.css" rel="stylesheet" type="text/css" />
+<link href="assets/bower/alertify.js/themes/alertify.bootstrap.css" rel="stylesheet" type="text/css" />
+
 <style>
     .container {
         width: 100%;
