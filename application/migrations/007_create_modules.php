@@ -53,7 +53,7 @@ class Migration_Create_modules extends CI_Migration
     public function insert_modules()
     {
         $name  = ['administration', 'site', 'users', 'administrators', 'users', 'Dashboard'];
-        $route = ['#', 'admin/site', '#', 'admin/administrator', 'admin/user', '#'];
+        $route = ['#', 'admin/site/edit', '#', 'admin/administrator', 'admin/user', '#'];
         $module = [null, 1, null, 3, 3, null];
         $font = ['fa fa-unlock-alt', null, 'fa fa-users', null, null, 'fa fa-pie-chart'];
 
