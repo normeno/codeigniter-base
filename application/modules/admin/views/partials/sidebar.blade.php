@@ -13,43 +13,25 @@
         </div>
 
         <ul class="sidebar-menu">
+            @foreach ($sidebar as $sb)
 
+                @if (empty($sb['module_id']) && !isset($sb['childs']))
+                    <li><a href="{{ $sb['route'] }}"><i class="{{ $sb['font'] }}"></i> <span>{{ $sb['name'] }}</span></a></li>
+                @elseif (empty($sb['module_id']) && isset($sb['childs']))
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="{{ $sb['font'] }}"></i>
+                            <span>{{ $sb['name'] }}</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu" id="ul-menu-{{ $sb['id'] }}">
+                            @foreach ($sb['childs'] as $child)
+                                <li><a href="{{ $child['route'] }}">{{ $child['name'] }}</a></li>
+                            @endforeach
+                        </ul>
+                @endif
+            @endforeach
         </ul>
     </section>
 
 </aside>
-
-@push('scripts')
-<script type="text/javascript">
-    $.get( "{{ site_url('admin/home/modules') }}",
-            {
-                csrf_token: "{{ $csrf['hash'] }}"
-            }
-    ).done(function( data ) {
-        var html = '';
-
-        $.each( data, function( key, value ) {
-
-            if (!value.module_id && typeof value.childs === 'undefined') { alert('admin.administrator');
-                html += '<li><a href="' + value.route + '"><i class="fa fa-'+value.font+'"></i> <span>' + Lang.get(value.name) + '</span></a></li>';
-            } else if (!value.module_id && typeof value.childs !== 'undefined') {
-                html += '<li class="treeview">' +
-                        '<a href="#">' +
-                        '<i class="fa '+value.font+'"></i>' +
-                        '<span>' + value.name + '</span>' +
-                        '<i class="fa fa-angle-left pull-right"></i>' +
-                        '</a>' +
-                        '<ul class="treeview-menu" id="ul-menu-' + value.id + '">';
-
-                $.each( value.childs, function( k, v ) {
-                    html += '<li><a href="' + v.route + '">'+v.name+'</a></li>';
-                });
-
-                html += '</ul></li>';
-            }
-        });
-
-        $(".sidebar-menu").append(html);
-    });
-</script>
-@endpush
