@@ -1,6 +1,7 @@
 <meta charset="UTF-8">
 <base href="{{ base_url() }}" />
 <title> @yield('htmlheader_title', 'Your title here') </title>
+<meta name="{{ $csrf['name'] }}" content="{{ $csrf['hash'] }}">
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
 <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css" />

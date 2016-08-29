@@ -13,28 +13,43 @@
         </div>
 
         <ul class="sidebar-menu">
-            <li class="header">menu navegacion</li>
 
-            <li class="active">
-                <a href="{{ site_url('admin') }}"><i class='fa fa-pie-chart'></i> <span>Home</span></a>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class='fa fa-building'></i> <span>A</span>
-                </a>
-            </li>
-
-            <li class="treeview">
-                <a href="#">
-                    <i class='fa fa-users'></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ site_url('admin/administrator') }}">Administrators</a></li>
-                    <li><a href="{{ site_url('admin/user') }}">Users</a></li>
-                </ul>
-            </li>
         </ul>
     </section>
 
 </aside>
+
+@push('scripts')
+<script type="text/javascript">
+    $.get( "{{ site_url('admin/home/modules') }}",
+            {
+                csrf_token: "{{ $csrf['hash'] }}"
+            }
+    ).done(function( data ) {
+        var html = '';
+
+        $.each( data, function( key, value ) {
+
+            if (!value.module_id && typeof value.childs === 'undefined') { alert('admin.administrator');
+                html += '<li><a href="' + value.route + '"><i class="fa fa-'+value.font+'"></i> <span>' + Lang.get(value.name) + '</span></a></li>';
+            } else if (!value.module_id && typeof value.childs !== 'undefined') {
+                html += '<li class="treeview">' +
+                        '<a href="#">' +
+                        '<i class="fa '+value.font+'"></i>' +
+                        '<span>' + value.name + '</span>' +
+                        '<i class="fa fa-angle-left pull-right"></i>' +
+                        '</a>' +
+                        '<ul class="treeview-menu" id="ul-menu-' + value.id + '">';
+
+                $.each( value.childs, function( k, v ) {
+                    html += '<li><a href="' + v.route + '">'+v.name+'</a></li>';
+                });
+
+                html += '</ul></li>';
+            }
+        });
+
+        $(".sidebar-menu").append(html);
+    });
+</script>
+@endpush

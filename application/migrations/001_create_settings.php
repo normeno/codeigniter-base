@@ -5,7 +5,7 @@ class Migration_Create_settings extends CI_Migration
 {
     public function up()
     {
-        $this->dbforge->add_field(array(
+        $this->dbforge->add_field([
             'id' => [
                 'type' => 'INT',
                 'constraint' => 11,
@@ -25,17 +25,33 @@ class Migration_Create_settings extends CI_Migration
             'logo' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100',
-                'null' => false,
+                'null' => true,
             ],
-        ));
+            'website' => [
+                'type' => 'VARCHAR',
+                'constraint' => '25',
+                'null' => true,
+            ],
+        ]);
 
         $this->dbforge->add_key('id', true);
 
         $this->dbforge->create_table('settings');
+
+        $data = [
+            'short_name' => 'Krei',
+            'long_name' => 'Krei',
+            'logo' => null,
+            'website' => 'http://www.krei.cl'
+        ];
+
+        $this->db->insert('settings', $data);
     }
 
     public function down()
     {
+        $this->db->query('SET FOREIGN_KEY_CHECKS=0;');
         $this->dbforge->drop_table('settings');
+        $this->db->query('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

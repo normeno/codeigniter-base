@@ -31,6 +31,8 @@ class Migration_Create_login_attempts extends CI_Migration
 
     public function down()
     {
+        $this->db->query('SET FOREIGN_KEY_CHECKS=0;');
         $this->dbforge->drop_table('login_attempts');
+        $this->db->query('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

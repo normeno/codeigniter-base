@@ -28,7 +28,7 @@ class Migration_Create_modules extends CI_Migration
                 'unsigned' => true,
                 'null' => true,
             ],
-            'route' => [
+            'font' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20',
                 'null' => false,
@@ -39,10 +39,33 @@ class Migration_Create_modules extends CI_Migration
         $this->dbforge->add_field('CONSTRAINT FOREIGN KEY (module_id) REFERENCES modules(id)');
 
         $this->dbforge->create_table('modules');
+
+        $this->insert_modules();
     }
 
     public function down()
     {
+        $this->db->query('SET FOREIGN_KEY_CHECKS=0;');
         $this->dbforge->drop_table('modules');
+        $this->db->query('SET FOREIGN_KEY_CHECKS=1;');
+    }
+
+    public function insert_modules()
+    {
+        $name  = ['administration', 'site', 'users', 'administrators', 'users'];
+        $route = ['#', 'admin/site', '#', 'admin/administrator', 'admin/user'];
+        $module = [null, 1, null, 3, 3];
+        $font = ['fa-unlock-alt', null, 'fa-users', null, null];
+
+        for ($i=0; $i<count($name); $i++) {
+            $data[] = [
+                'name' => $name[$i],
+                'route' => $route[$i],
+                'module_id' => $module[$i],
+                'font' => $font[$i]
+            ];
+        }
+
+        $this->db->insert_batch('modules', $data);
     }
 }
