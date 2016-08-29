@@ -90,4 +90,33 @@ class Administrator extends Admin_Controller
 
         var_dump($create);
     }
+
+    public function dataTable()
+    {
+        $array = [
+            'draw' => 1,
+            "recordsTotal" => 2,
+            "recordsFiltered" => 2,
+            [
+                "Airi",
+                "Satou",
+                "Accountant",
+                "Tokyo",
+                "28th Nov 08",
+                "$162,700"
+            ],
+            [
+                "Airi",
+                "Satou",
+                "Accountant",
+                "Tokyo",
+                "28th Nov 08",
+                "$162,700"
+            ],
+        ];
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($array));
+    }
 }

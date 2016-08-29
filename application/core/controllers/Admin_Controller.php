@@ -9,7 +9,7 @@ class Admin_Controller extends MY_Controller
 
         $this->load->library([
             'form_validation',
-            'ion_auth'
+            'ion_auth',
         ]);
 
         $this->load->helper([
