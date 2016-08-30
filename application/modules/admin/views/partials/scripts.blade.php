@@ -1,4 +1,15 @@
 <script src="assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
+<script>
+    (function() {
+        $.ajaxSetup( {
+            headers: {
+                "{{ $csrf['name'] }}": "{{ $csrf['hash'] }}"
+            }
+        } );
+    }());
+</script>
+
 <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="assets/js/app.min.js" type="text/javascript"></script>
 
@@ -9,6 +20,10 @@
 
 <script src="assets/bower/alertify.js/lib/alertify.min.js" type="text/javascript"></script>
 <script src="assets/bower/imagelightbox/dist/imagelightbox.min.js" type="text/javascript"></script>
+
+<script src="assets/bower/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="assets/bower/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<script src="assets/bower/datatables.net-select/js/dataTables.select.min.js" type="text/javascript"></script>
 
 <script>
     <?php $notify = $ci->session->userdata('notify'); ?>

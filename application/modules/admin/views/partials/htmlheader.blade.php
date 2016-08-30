@@ -26,6 +26,9 @@
 <link href="assets/bower/alertify.js/themes/alertify.bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="assets/bower/imagelightbox/dist/imagelightbox.min.css" rel="stylesheet" type="text/css" />
 
+<link href="assets/bower/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="assets/bower/datatables.net-select-bs/css/select.bootstrap.min.css" rel="stylesheet" type="text/css" />
+
 <style>
     .container {
         width: 100%;

@@ -41,6 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $autoload['packages'] = [
     APPPATH.'third_party/ion_auth',
+    APPPATH.'third_party/grocery_crud',
 ];
 
 /*

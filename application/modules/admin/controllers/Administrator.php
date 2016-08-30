@@ -3,9 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Administrator extends Admin_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
-
+        $this->render_view('administrator.index', []);
     }
 
     /**
@@ -93,30 +98,14 @@ class Administrator extends Admin_Controller
 
     public function dataTable()
     {
-        $array = [
-            'draw' => 1,
-            "recordsTotal" => 2,
-            "recordsFiltered" => 2,
-            [
-                "Airi",
-                "Satou",
-                "Accountant",
-                "Tokyo",
-                "28th Nov 08",
-                "$162,700"
-            ],
-            [
-                "Airi",
-                "Satou",
-                "Accountant",
-                "Tokyo",
-                "28th Nov 08",
-                "$162,700"
-            ],
-        ];
+        $this -> load -> library('Datatable', array('model' => 'administrator_model', 'rowIdCol' => 'id'));
 
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($array));
+        $jsonArray = $this -> datatable -> datatableJson(array(
+            'active' => 'boolean'
+        ));
+
+        $this -> output -> set_header("Pragma: no-cache");
+        $this -> output -> set_header("Cache-Control: no-store, no-cache");
+        $this -> output -> set_content_type('application/json') -> set_output(json_encode($jsonArray));
     }
 }
