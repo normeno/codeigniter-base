@@ -34,7 +34,9 @@ class Administrator extends Admin_Controller
         }
     }
 
-
+    /**
+     * Create a new administrator
+     */
     public function store()
     {
         $email = $this->input->post('email', true);
@@ -52,9 +54,18 @@ class Administrator extends Admin_Controller
 
         $create = $this->ion_auth->register($username, $password, $email, $additional_data, $group);
 
-        var_dump($create);
+        if($create)
+            $notify = ['status' => 'success', 'msg' => 'Success Edit record'];
+        else
+            $notify = ['status' => 'error', 'msg' => 'Error Edit record'];
+
+        $this->session->set_userdata('notify', $notify);
+        redirect('admin/administrator', 'refresh');
     }
 
+    /**
+     * Edit Form
+     */
     public function edit($id)
     {
         $this->form_validation->set_rules('company', 'Company', 'trim|required');
@@ -66,7 +77,7 @@ class Administrator extends Admin_Controller
         $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|matches[password]');
         $this->form_validation->set_rules('phone', 'Phone', 'trim');
 
-        if (!$this->form_validation->run()) {
+        if (!$this->form_validation->run('site/edit')) {
             $id = $this->uri->segment(4);
             $user = $this->ion_auth->user($id)->row();
             $companies = $this->db->get('companies')->result();
@@ -76,6 +87,9 @@ class Administrator extends Admin_Controller
         }
     }
 
+    /**
+     * Update administrator
+     */
     public function update($id)
     {
         $data = [
@@ -91,14 +105,23 @@ class Administrator extends Admin_Controller
         if(!empty($password))
             $data['password'] = $password;
 
-        $create = $this->ion_auth->update($id, $data);
+        $update = $this->ion_auth->update($id, $data);
 
-        var_dump($create);
+        if($update)
+            $notify = ['status' => 'success', 'msg' => 'Success Edit record'];
+        else
+            $notify = ['status' => 'error', 'msg' => 'Error Edit record'];
+
+        $this->session->set_userdata('notify', $notify);
+        redirect('admin/administrator', 'refresh');
     }
 
+    /**
+     * Show Datatable
+     */
     public function dataTable()
     {
-        $this -> load -> library('Datatable', array('model' => 'administrator_model', 'rowIdCol' => 'id'));
+        $this->load->library('Datatable', ['model' => 'Administrator_datatable', 'rowIdCol' => 'id']);
 
         $jsonArray = $this -> datatable -> datatableJson(array(
             'active' => 'boolean'

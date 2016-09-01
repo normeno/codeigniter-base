@@ -10,12 +10,17 @@ class Admin_Controller extends MY_Controller
         $this->load->library([
             'form_validation',
             'ion_auth',
+            'uploader'
         ]);
 
         $this->load->helper([
             'form',
             'security'
         ]);
+
+        $this->lang->load('admin', $this->session->lang);
+
+        $this->form_validation->set_error_delimiters('<small class="help-block">', '</small>');
     }
 
     protected function render_view($view, $data)
@@ -56,30 +61,32 @@ class Admin_Controller extends MY_Controller
     protected function modules()
     {
         $output = [];
-        $menus = $this->db->get('modules')->result();
+        $menus = $this->db->order_by('priority', 'ASC')->get('modules')->result();
 
+        // Get main menu
         foreach ($menus as $menu) {
-
             if (!$menu->module_id) {
                 $output[$menu->id] = [
                     'id'        => $menu->id,
-                    'name'      => $menu->name,
+                    'name'      => $this->lang->line(strtolower($menu->name)),
                     'route'     => site_url($menu->route),
                     'menu_id'   => $menu->module_id,
                     'font'      => $menu->font
                 ];
-            } else {
-                if (array_key_exists($menu->module_id, $output)) {
-                    $output[$menu->module_id]['childs'][] = [
-                        'id'        => $menu->id,
-                        'name'      => $menu->name,
-                        'route'     => site_url($menu->route),
-                        'menu_id'   => $menu->module_id,
-                        'font'      => $menu->font
-                    ];
-                }
             }
+        }
 
+        // Get submenus
+        foreach ($menus as $menu) {
+            if (array_key_exists($menu->module_id, $output)) {
+                $output[$menu->module_id]['childs'][] = [
+                    'id'        => $menu->id,
+                    'name'      => $this->lang->line(strtolower($menu->name)),
+                    'route'     => site_url($menu->route),
+                    'menu_id'   => $menu->module_id,
+                    'font'      => $menu->font
+                ];
+            }
         }
 
         $this->session->unset_userdata('sidebar');

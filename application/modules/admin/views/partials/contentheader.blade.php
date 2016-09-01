@@ -4,7 +4,7 @@
         <small>@yield('contentheader_description')</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+        <li><i class="fa fa-home"></i> {{ $ci->lang->line('home') }}</li>
         @yield('contentheader_breadcrumb', 'Breadcrumb here')
     </ol>
 </section>

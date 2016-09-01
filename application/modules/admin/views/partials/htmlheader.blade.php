@@ -29,10 +29,17 @@
 <link href="assets/bower/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="assets/bower/datatables.net-select-bs/css/select.bootstrap.min.css" rel="stylesheet" type="text/css" />
 
+<link href="assets/bower/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" type="text/css" />
+
 <style>
     .container {
         width: 100%;
     }
 </style>
+
+<script>
+    var siteUrl = "{{ site_url() }}",
+        baseUrl = "{{ base_url() }}"
+</script>
 
 @stack('css')

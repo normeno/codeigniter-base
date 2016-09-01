@@ -116,16 +116,16 @@
                             <img src="//lorempixel.com/100/100" class="img-circle" alt="User Image" />
                             <p>
                                 {{ "{$current_user->first_name} {$current_user->last_name}" }}
-                                <small>Miembro desde {{ gmdate("d-m-Y", $current_user->created_on) }}</small>
+                                <small>{{ $ci->lang->line('member_since') }} {{ gmdate("d-m-Y", $current_user->created_on) }}</small>
                             </p>
                         </li>
 
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{ site_url("admin/administrator/edit/{$current_user->id}") }}" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{ site_url("admin/administrator/edit/{$current_user->id}") }}" class="btn btn-default btn-flat">{{ $ci->lang->line('profile') }}</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{ site_url('admin/logout') }}" class="btn btn-default btn-flat">Logout</a>
+                                <a href="{{ site_url('admin/logout') }}" class="btn btn-default btn-flat">{{ $ci->lang->line('logout') }}</a>
                             </div>
                         </li>
                     </ul>

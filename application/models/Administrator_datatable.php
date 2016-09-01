@@ -1,12 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: normeno
- * Date: 29-08-16
- * Time: 17:23
- */
-class Administrator_model extends CI_Model implements DatatableModel
+class Administrator_datatable extends CI_Model implements DatatableModel
 {
     public function appendToSelectStr() {
         return array(
@@ -19,10 +13,15 @@ class Administrator_model extends CI_Model implements DatatableModel
     }
 
     public function joinArray(){
-        return NULL;
+        return [
+            'users_groups ug' => 'ug.user_id = u.id'
+        ];
     }
 
-    public function whereClauseArray(){
-        return NULL;
+    public function whereClauseArray()
+    {
+        return [
+            'ug.group_id' => 2
+        ];
     }
 }

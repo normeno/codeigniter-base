@@ -21,6 +21,19 @@ class MY_Controller extends MX_Controller
             $view->with("session", $this->session);
             $view->with("uri", $this->uri);
         });
+
+        $this->change_language();
+    }
+
+    public function change_language()
+    {
+        if(is_null($this->session->language)) {
+            $this->config->set_item('language', 'english');
+            $this->session->set_userdata('language', 'english');
+        } else {
+            $this->config->set_item('language', 'spanish');
+            $this->session->set_userdata('language', 'spanish');
+        }
     }
 }
 

@@ -33,6 +33,12 @@ class Migration_Create_modules extends CI_Migration
                 'constraint' => '20',
                 'null' => false,
             ],
+            'priority' => [
+                'type' => 'TINYINT',
+                'constraint' => 4,
+                'unsigned' => true,
+                'null' => true,
+            ],
         ));
 
         $this->dbforge->add_key('id', true);
@@ -56,13 +62,15 @@ class Migration_Create_modules extends CI_Migration
         $route = ['#', 'admin/site/edit', '#', 'admin/administrator', 'admin/user', '#'];
         $module = [null, 1, null, 3, 3, null];
         $font = ['fa fa-unlock-alt', null, 'fa fa-users', null, null, 'fa fa-pie-chart'];
+        $priority = [2, null, 3, null, null, 1];
 
         for ($i=0; $i<count($name); $i++) {
             $data[] = [
                 'name' => $name[$i],
                 'route' => $route[$i],
                 'module_id' => $module[$i],
-                'font' => $font[$i]
+                'font' => $font[$i],
+                'priority' => $priority[$i]
             ];
         }
 

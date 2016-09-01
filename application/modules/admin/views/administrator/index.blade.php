@@ -5,12 +5,12 @@
 @endsection
 
 @section('contentheader_title')
-    Create administrador
+    {{ $ci->lang->line('list') }} {{ $ci->lang->line('administrator') }}
 @endsection
 
 @section('contentheader_breadcrumb')
-    <li><a href="{{ site_url('admin/administrator') }}">Administrator</a></li>
-    <li class="active">list</li>
+    <li>{{ $ci->lang->line('administrator') }}</li>
+    <li class="active">{{ $ci->lang->line('list') }}</li>
 @endsection
 
 @section('main-content')
@@ -20,16 +20,16 @@
             <div class="col-md-12">
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">Edit Form</div>
+                    <div class="panel-heading">{{ $ci->lang->line('administrators') }}</div>
                     <div class="panel-body table-responsive">
                         <table id="table" class="table table-striped table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>Actions</th>
+                                    <th>{{ $ci->lang->line('username') }}</th>
+                                    <th>{{ $ci->lang->line('email') }}</th>
+                                    <th>{{ $ci->lang->line('first_name') }}</th>
+                                    <th>{{ $ci->lang->line('last_name') }}</th>
+                                    <th>{{ $ci->lang->line('actions') }}</th>
                                 </tr>
                             </thead>
                         </table>
@@ -60,7 +60,7 @@
                     data: null,
                     className: "center",
                     searchable: false,
-                    defaultContent: '<button class="btn btn-primary btn-xs btn-edit" type="button"><span class="fa fa-pencil-square-o"></span> Edit</button> '
+                    defaultContent: '<button class="btn btn-primary btn-xs btn-edit" type="button"><span class="fa fa-pencil-square-o"></span> {{ $ci->lang->line('edit') }}</button> '
                 },
             ],
         });

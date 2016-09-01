@@ -25,6 +25,10 @@
 <script src="assets/bower/datatables.net-bs/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
 <script src="assets/bower/datatables.net-select/js/dataTables.select.min.js" type="text/javascript"></script>
 
+<script src="assets/bower/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript"></script>
+
+<script src="assets/js/codeigniter_base.js" type="text/javascript"></script>
+
 <script>
     <?php $notify = $ci->session->userdata('notify'); ?>
 

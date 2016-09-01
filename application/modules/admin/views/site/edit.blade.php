@@ -5,12 +5,12 @@
 @endsection
 
 @section('contentheader_title')
-    Create administrador
+    {{ $ci->lang->line('site_config') }}
 @endsection
 
 @section('contentheader_breadcrumb')
-    <li><a href="{{ site_url('admin/administrator') }}">Administrator</a></li>
-    <li class="active">Create</li>
+    <li>{{ $ci->lang->line('site') }}</li>
+    <li class="active">{{ $ci->lang->line('edit') }}</li>
 @endsection
 
 @section('main-content')
@@ -20,12 +20,12 @@
             <div class="col-md-12">
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">Edit Form</div>
+                    <div class="panel-heading">{{ $ci->lang->line('form') }}</div>
                     <div class="panel-body">
-                        {!! form_open("admin/site/edit", ['class' => 'form-horizontal']) !!}
+                        {!! form_open_multipart("admin/site/edit", ['class' => 'form-horizontal']) !!}
                             @include('site.form')
 
-                            <input type="submit" class="btn btn-success" value="Editar">
+                            <input type="submit" class="btn btn-success" value="{{ $ci->lang->line('edit') }}">
                         {!! form_close() !!}
                     </div>
                 </div>

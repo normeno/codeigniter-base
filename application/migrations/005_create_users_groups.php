@@ -43,19 +43,23 @@ class Migration_Create_users_groups extends CI_Migration
     {
         $this->load->library(['ion_auth']);
 
-        $email = 'nicolas.ormeno@krei.cl';
-        $username = 'normeno';
+        $email = ['developer@krei.cl', 'admin@krei.cl', 'user@krei.cl'];
+        $username = ['developer', 'admin', 'user'];
         $password = '123123';
 
-        $additional_data = [
-            'first_name' => 'Nicolás',
-            'last_name' => 'Ormeño',
-            'company_id' => 1,
-            'phone' => '987654321'
-        ];
-
-        $group = ['1'];
-
-        $this->ion_auth->register($username, $password, $email, $additional_data, $group);
+        for ($i=0; $i<3; $i++) {
+            $this->ion_auth->register(
+                $username[$i],
+                $password,
+                $email[$i],
+                [
+                    'first_name' => $username[$i],
+                    'last_name' => 'Krei',
+                    'company_id' => 1,
+                    'phone' => '987654321'
+                ],
+                [$i+1]
+            );
+        }
     }
 }
