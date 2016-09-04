@@ -6,6 +6,8 @@ class Administrator extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('administrator_model', 'administrator');
+        $this->load->model('company_model', 'company');
     }
 
     public function index()
@@ -18,17 +20,9 @@ class Administrator extends Admin_Controller
      */
     public function create()
     {
-        $this->form_validation->set_rules('company', 'Company', 'trim|required');
-        $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'trim');
-        $this->form_validation->set_rules('username', 'Username', 'trim');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|max_length[20]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|matches[password]');
-        $this->form_validation->set_rules('phone', 'Phone', 'trim');
-
-        if (!$this->form_validation->run()) {
-            $this->render_view('administrator.create', []);
+        if (!$this->form_validation->run('user')) {
+            $companies = $this->company->get_all();
+            $this->render_view('administrator.create', ['companies' => $companies]);
         } else {
             $this->store();
         }
@@ -39,6 +33,10 @@ class Administrator extends Admin_Controller
      */
     public function store()
     {
+        if (!empty($_FILES) && (isset($_FILES['avatar']) && !empty($_FILES['avatar']['name']))) {
+            $avatar = $this->administrator->setAvatarAttribute($_FILES);
+        }
+
         $email = $this->input->post('email', true);
         $username = $this->input->post('username', true);
         $password = $this->input->post('password', true);
@@ -47,10 +45,11 @@ class Administrator extends Admin_Controller
             'first_name' => $this->input->post('first_name', true),
             'last_name' => $this->input->post('last_name', true),
             'company_id' => $this->input->post('company', true),
-            'phone' => $this->input->post('phone', true)
+            'phone' => $this->input->post('phone', true),
+            'avatar' => isset($avatar) && !is_null($avatar) ? $avatar : null
         ];
 
-        $group = ['1']; // Sets user to admin.
+        $group = ['2']; // Sets user to admin.
 
         $create = $this->ion_auth->register($username, $password, $email, $additional_data, $group);
 
@@ -68,16 +67,7 @@ class Administrator extends Admin_Controller
      */
     public function edit($id)
     {
-        $this->form_validation->set_rules('company', 'Company', 'trim|required');
-        $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'trim');
-        $this->form_validation->set_rules('username', 'Username', 'trim');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'trim|min_length[6]|max_length[20]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|matches[password]');
-        $this->form_validation->set_rules('phone', 'Phone', 'trim');
-
-        if (!$this->form_validation->run('site/edit')) {
+        if (!$this->form_validation->run('user')) {
             $id = $this->uri->segment(4);
             $user = $this->ion_auth->user($id)->row();
             $companies = $this->db->get('companies')->result();
@@ -101,7 +91,12 @@ class Administrator extends Admin_Controller
             'phone' => $this->input->post('phone', true)
         ];
 
+        if (!empty($_FILES) && (isset($_FILES['avatar']) && !empty($_FILES['avatar']['name']))) {
+            $data['avatar'] = $this->administrator->setAvatarAttribute($_FILES, $id);
+        }
+
         $password = $this->input->post('password', true);
+
         if(!empty($password))
             $data['password'] = $password;
 

@@ -63,6 +63,19 @@
         </div>
 
         <div class="form-group">
+            <label for="avatar" class="col-sm-3 control-label">{{ $ci->lang->line('avatar') }}</label>
+            <div class="col-sm-4 container-logo kv-avatar center-block">
+                <input type="file" class="form-control file-loading" name="avatar" id="avatar" placeholder="{{ $ci->lang->line('avatar') }}">
+            </div>
+            <div class="col-sm-5 has-error">
+                @if (!is_null($ci->session->userdata('error-avatar')))
+                    <small class="help-block">{!! $ci->session->userdata('error-avatar') !!}</small>
+                @endif
+                <?php $ci->session->unset_userdata('error-avatar'); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="password" class="col-sm-3 control-label">{{ $ci->lang->line('password') }}</label>
             <div class="col-sm-4">
                 <input type="password" class="form-control" name="password" id="password" placeholder="{{ $ci->lang->line('password') }}">
@@ -93,3 +106,30 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+
+    var imgSource = "{{ isset($user) && !is_null($user->avatar) ? $user->avatar : 'default-user.png' }}",
+            avatar = "{{ base_url('assets/img/users/') }}"+imgSource;
+
+    $("#avatar").fileinput({
+        overwriteInitial: true,
+        maxFileSize: 1500,
+        showClose: false,
+        showCaption: false,
+        showBrowse: false,
+        browseOnZoneClick: true,
+        removeLabel: '',
+        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+        removeTitle: '{{ $ci->lang->line('no_changes') }}',
+        elErrorContainer: '#kv-avatar-errors-2',
+        msgErrorClass: 'alert alert-block alert-danger',
+        defaultPreviewContent: '<img src="'+avatar+'" style="width:160px">' +
+        '<h6 class="text-muted">{{ $ci->lang->line('click_to_select') }}</h6>',
+        layoutTemplates: {main2: '{preview} {remove} {browse}'},
+        allowedFileExtensions: ["jpg", "png", "jpeg"]
+    });
+
+</script>
+@endpush

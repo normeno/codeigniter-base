@@ -27,6 +27,11 @@ class Migration_Create_users extends CI_Migration
                 'constraint' => '100',
                 'null' => false,
             ],
+            'avatar' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+                'null' => true,
+            ],
             'password' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
@@ -106,6 +111,14 @@ class Migration_Create_users extends CI_Migration
                 'null' => true,
                 'default' => null,
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ]
         ));
 
         $this->dbforge->add_key('id', true);

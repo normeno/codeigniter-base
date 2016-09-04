@@ -11,9 +11,9 @@ class Uploader
      * Upload an image to the server
      *
      * @param $nameFile
-     * @param $path
      * @param null $config
      * @return array
+     * @internal param $path
      */
     public function upload_image($nameFile, $config = null)
     {
@@ -21,14 +21,13 @@ class Uploader
 
         $this->ci->load->library('upload', $this->config_image($config));
 
-        //$this->ci->upload->initialize($this->config_image($config));
-
         if (!$this->ci->upload->do_upload($nameFile)) {
             $error = array('error' => $this->ci->upload->display_errors());
             $response['status'] = 0;
             $response['data'] = $error;
         } else {
             $data = $this->ci->upload->data();
+            chmod($data['full_path'], 0664);
             $response['status'] = 1;
             $response['data'] = $data;
         }

@@ -26,6 +26,10 @@ $lang = [
     'edit_' => 'Editar %1',
     'form' => 'Formulario',
     'actions' => 'Acciones',
+    'success_create' => 'Éxito al crear registro',
+    'error_create' => 'Error al crear registro',
+    'success_update' => 'Éxito al editar registro',
+    'error_update' => 'Error al editar registro',
 
     // Upload image
     'no_changes' => 'Cancelar o reiniciar cambios',

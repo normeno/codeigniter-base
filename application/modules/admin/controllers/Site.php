@@ -6,7 +6,7 @@ class Site extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('setting_model', 'setting');
+        $this->load->model('site_model', 'site');
     }
 
     /**
@@ -18,55 +18,32 @@ class Site extends Admin_Controller
             $settings = $this->db->where('id', 1)->get('settings')->row();
             $this->render_view('site.edit', ['settings' => $settings]);
         } else {
-            $this->update();
+            $this->update(1);
         }
     }
 
     /**
      * Update administrator
      */
-    public function update()
+    public function update($id)
     {
-        if (!empty($_FILES)) {
-            $path = FCPATH.'assets/img/companies/';
-            $avatar = $this->uploader->upload_image('logo', ['path' => $path]);
-
-            if($avatar['status'] == 0) {
-                $this->session->set_userdata('error-logo', $avatar['data']['error']);
-                $this->session->set_userdata('notify', ['status' => 'error', 'msg' => 'Error Edit record']);
-                redirect('admin/site/edit', 'refresh');
-            }
-        }
-
-        if (!empty($avatar) && $avatar['status'] == 1) {
-            $image = $avatar['data']['file_name'];
-        } else {
-            $image = $this->setting->get(1);
-            $image = $image->logo;
-        }
-
         $data = [
             'short_name' => $this->input->post('short_name', true),
             'full_name' => $this->input->post('full_name', true),
             'website' => $this->input->post('website', true),
-            'logo' => isset($image) ? $image : null,
             'contact_email' => $this->input->post('contact_email', true)
         ];
 
-        var_dump($avatar);
-        exit;
+        if (!empty($_FILES) && (isset($_FILES['logo']) && !empty($_FILES['logo']['name']))) {
+            $data['logo'] = $this->site->setLogoAttribute($_FILES, $id);
+        }
 
-        $this->db->where('id', 1)->update('settings', $data);
+        $this->site->update(1, $data);
 
         if($this->db->affected_rows() > 0) {
-            if (!empty($_FILES)) {
-                $path = './companies/';
-                $this->uploader->upload_image('logo', $path);
-            }
-
-            $notify = ['status' => 'success', 'msg' => 'Success Edit record'];
+            $notify = ['status' => 'success', 'msg' => $this->lang->line('success_update')];
         } else {
-            $notify = ['status' => 'error', 'msg' => 'Error Edit record'];
+            $notify = ['status' => 'error', 'msg' => $this->lang->line('error_update')];
         }
 
         $this->session->set_userdata('notify', $notify);

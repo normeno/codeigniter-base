@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('htmlheader_title')
-    Admin - Create
+    Admin - {{ $ci->lang->line('list') }} {{ $ci->lang->line('administrators') }}
 @endsection
 
 @section('contentheader_title')
-    {{ $ci->lang->line('list') }} {{ $ci->lang->line('administrator') }}
+    {{ $ci->lang->line('list') }} {{ $ci->lang->line('administrators') }}
 @endsection
 
 @section('contentheader_breadcrumb')
@@ -22,6 +22,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{ $ci->lang->line('administrators') }}</div>
                     <div class="panel-body table-responsive">
+
+                        <a href="{{ site_url('admin/administrator/create') }}" class="btn btn-success btn-sm">{{ $ci->lang->line('create') }} {{ $ci->lang->line('user') }}</a>
+                        <br><br>
+
                         <table id="table" class="table table-striped table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>

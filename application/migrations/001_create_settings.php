@@ -37,6 +37,14 @@ class Migration_Create_settings extends CI_Migration
                 'constraint' => '30',
                 'null' => true,
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ]
         ]);
 
         $this->dbforge->add_key('id', true);

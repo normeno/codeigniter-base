@@ -10,7 +10,7 @@
 
 @section('contentheader_breadcrumb')
     <li><a href="{{ site_url('admin/user') }}">{{ $ci->lang->line('users') }}</a></li>
-    <li class="active">{{ $ci->lang->line('create') }}</li>
+    <li class="active">{{ $ci->lang->line('edit') }}</li>
 @endsection
 
 @section('main-content')
@@ -22,7 +22,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{ $ci->lang->line('form') }}</div>
                     <div class="panel-body">
-                        {!! form_open("admin/user/edit/$id", ['class' => 'form-horizontal']) !!}
+                        {!! form_open_multipart("admin/user/edit/$id", ['class' => 'form-horizontal']) !!}
                             @include('user.form')
 
                             <input type="submit" class="btn btn-success" value="{{ $ci->lang->line('edit') }}">

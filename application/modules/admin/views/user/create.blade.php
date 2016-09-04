@@ -20,12 +20,12 @@
             <div class="col-md-12">
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">Creation Form</div>
+                    <div class="panel-heading">{{ $ci->lang->line('form') }}</div>
                     <div class="panel-body">
-                        {!! form_open('admin/user/create', ['class' => 'form-horizontal']) !!}
+                        {!! form_open_multipart('admin/user/create', ['class' => 'form-horizontal']) !!}
                             @include('user.form')
 
-                        <input type="submit" class="btn btn-success" value="Crear">
+                        <input type="submit" class="btn btn-success" value="{{ $ci->lang->line('create') }}">
                         {!! form_close() !!}
                     </div>
                 </div>

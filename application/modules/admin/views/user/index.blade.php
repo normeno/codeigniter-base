@@ -22,6 +22,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{ $ci->lang->line('users') }}</div>
                     <div class="panel-body table-responsive">
+
+                        <a href="{{ site_url('admin/user/create') }}" class="btn btn-success btn-sm">{{ $ci->lang->line('create') }} {{ $ci->lang->line('user') }}</a>
+                        <br><br>
+
                         <table id="table" class="table table-striped table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>

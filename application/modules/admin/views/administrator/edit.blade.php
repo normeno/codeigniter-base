@@ -22,7 +22,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{ $ci->lang->line('edit') }} {{ $user->first_name . ' ' . $user->last_name }} </div>
                     <div class="panel-body">
-                        {!! form_open("admin/administrator/edit/$id", ['class' => 'form-horizontal']) !!}
+                        {!! form_open_multipart("admin/administrator/edit/$id", ['class' => 'form-horizontal']) !!}
                             @include('administrator.form')
 
                             <input type="submit" class="btn btn-success" value="{{ $ci->lang->line('edit') }}">

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('htmlheader_title')
-    Admin - Create
+    Admin - {{ $ci->lang->line('edit') }} {{ $ci->lang->line('site') }}
 @endsection
 
 @section('contentheader_title')

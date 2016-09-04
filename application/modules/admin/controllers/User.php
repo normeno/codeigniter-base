@@ -6,6 +6,9 @@ class User extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+
+        $this->load->model('company_model', 'company');
+        $this->load->model('user_model', 'user');
     }
 
     public function index()
@@ -18,17 +21,10 @@ class User extends Admin_Controller
      */
     public function create()
     {
-        $this->form_validation->set_rules('company', 'Company', 'trim|required');
-        $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'trim');
-        $this->form_validation->set_rules('username', 'Username', 'trim');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|max_length[20]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|matches[password]');
-        $this->form_validation->set_rules('phone', 'Phone', 'trim');
+        if (!$this->form_validation->run('user')) {
+            $companies = $this->company->get_all();
 
-        if (!$this->form_validation->run()) {
-            $this->render_view('user.create', []);
+            $this->render_view('user.create', ['companies' => $companies]);
         } else {
             $this->store();
         }
@@ -37,6 +33,10 @@ class User extends Admin_Controller
 
     public function store()
     {
+        if (!empty($_FILES) && (isset($_FILES['avatar']) && !empty($_FILES['avatar']['name']))) {
+            $avatar = $this->user->setAvatarAttribute($_FILES);
+        }
+
         $email = $this->input->post('email', true);
         $username = $this->input->post('username', true);
         $password = $this->input->post('password', true);
@@ -45,28 +45,30 @@ class User extends Admin_Controller
             'first_name' => $this->input->post('first_name', true),
             'last_name' => $this->input->post('last_name', true),
             'company_id' => $this->input->post('company', true),
-            'phone' => $this->input->post('phone', true)
+            'phone' => $this->input->post('phone', true),
+            'avatar' => isset($avatar) && !is_null($avatar) ? $avatar : null
         ];
 
-        $group = ['1']; // Sets user to admin.
+        $group = ['3']; // Sets user to general user.
 
-        $create = $this->ion_auth->register($username, $password, $email, $additional_data, $group);
+        $create = $this->user->register($username, $password, $email, $additional_data, $group);
 
-        var_dump($create);
+        if($create) {
+            $now = date('Y-m-d H:i:s');
+            $this->user->update($create, ['created_at' => $now, 'updated_at' => $now]);
+            $notify = ['status' => 'success', 'msg' => $this->lang->line('success_create')];
+        }
+        else {
+            $notify = ['status' => 'error', 'msg' => $this->lang->line('error_create')];
+        }
+
+        $this->session->set_userdata('notify', $notify);
+        redirect('admin/user', 'refresh');
     }
 
     public function edit($id)
     {
-        $this->form_validation->set_rules('company', 'Company', 'trim|required');
-        $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'trim');
-        $this->form_validation->set_rules('username', 'Username', 'trim');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'trim|min_length[6]|max_length[20]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|matches[password]');
-        $this->form_validation->set_rules('phone', 'Phone', 'trim');
-
-        if (!$this->form_validation->run()) {
+        if (!$this->form_validation->run('user')) {
             $id = $this->uri->segment(4);
             $user = $this->ion_auth->user($id)->row();
             $companies = $this->db->get('companies')->result();
@@ -87,13 +89,27 @@ class User extends Admin_Controller
             'phone' => $this->input->post('phone', true)
         ];
 
+        if (!empty($_FILES) && (isset($_FILES['avatar']) && !empty($_FILES['avatar']['name']))) {
+            $data['avatar'] = $this->user->setAvatarAttribute($_FILES, $id);
+        }
+
         $password = $this->input->post('password', true);
+
         if(!empty($password))
             $data['password'] = $password;
 
-        $create = $this->ion_auth->update($id, $data);
+        $update = $this->ion_auth->update($id, $data);
 
-        var_dump($create);
+        if($update) {
+            $now = date('Y-m-d H:i:s');
+            $this->user->update($update, ['created_at' => $now, 'updated_at' => $now]);
+            $notify = ['status' => 'success', 'msg' => $this->lang->line('success_update')];
+        } else {
+            $notify = ['status' => 'error', 'msg' => $this->lang->line('error_update')];
+        }
+
+        $this->session->set_userdata('notify', $notify);
+        redirect('admin/user', 'refresh');
     }
 
     public function dataTable()
