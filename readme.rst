@@ -17,15 +17,13 @@ This project uses the following tools:
 - `Codeigniter DataTables <https://github.com/zepernick/Codeigniter-DataTables>`_
 - `Bootstrap File Input <http://plugins.krajee.com/file-input>`_
 - `Codeigniter Uploader <https://github.com/normeno/ci_utilities>`_
+- `DotEnv <https://github.com/vlucas/phpdotenv>`_
 
 **************************
 TO-DO
 **************************
 
-- Auth
-- Intervention Image
 - Email
 - Recovery Password
 - Rest Server
 - Swagger
-- Dotenv
