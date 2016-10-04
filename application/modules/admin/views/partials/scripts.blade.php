@@ -1,3 +1,7 @@
+@if($debugbar_renderer)
+    {!! $debugbar_renderer->render() !!}
+@endif
+
 <script src="assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 
 <script>
@@ -26,6 +30,8 @@
 <script src="assets/bower/datatables.net-select/js/dataTables.select.min.js" type="text/javascript"></script>
 
 <script src="assets/bower/bootstrap-fileinput/js/fileinput.min.js" type="text/javascript"></script>
+
+<script src="assets/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 
 <script src="assets/js/codeigniter_base.js" type="text/javascript"></script>
 

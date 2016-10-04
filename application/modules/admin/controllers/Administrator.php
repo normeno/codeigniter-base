@@ -8,6 +8,8 @@ class Administrator extends Admin_Controller
         parent::__construct();
         $this->load->model('administrator_model', 'administrator');
         $this->load->model('company_model', 'company');
+
+        parent::set_current_module(3);
     }
 
     public function index()
@@ -38,10 +40,10 @@ class Administrator extends Admin_Controller
         }
 
         $email = $this->input->post('email', true);
-        $username = $this->input->post('username', true);
         $password = $this->input->post('password', true);
 
         $additional_data = [
+            'username' => $this->input->post('username', true),
             'first_name' => $this->input->post('first_name', true),
             'last_name' => $this->input->post('last_name', true),
             'company_id' => $this->input->post('company', true),
@@ -51,12 +53,17 @@ class Administrator extends Admin_Controller
 
         $group = ['2']; // Sets user to admin.
 
-        $create = $this->ion_auth->register($username, $password, $email, $additional_data, $group);
+        $create = $this->administrator->insert([
+            'password' => $password,
+            'email' => $email,
+            'additional_data' => $additional_data,
+            'group' => $group
+        ]);
 
         if($create)
-            $notify = ['status' => 'success', 'msg' => 'Success Edit record'];
+            $notify = ['status' => 'success', 'msg' => $this->lang->line('success_create')];
         else
-            $notify = ['status' => 'error', 'msg' => 'Error Edit record'];
+            $notify = ['status' => 'error', 'msg' => $this->lang->line('success_create')];
 
         $this->session->set_userdata('notify', $notify);
         redirect('admin/administrator', 'refresh');
@@ -100,12 +107,13 @@ class Administrator extends Admin_Controller
         if(!empty($password))
             $data['password'] = $password;
 
-        $update = $this->ion_auth->update($id, $data);
+        $update = $this->administrator->update($id, $data);
 
-        if($update)
-            $notify = ['status' => 'success', 'msg' => 'Success Edit record'];
-        else
-            $notify = ['status' => 'error', 'msg' => 'Error Edit record'];
+        if($update) {
+            $notify = ['status' => 'success', 'msg' => $this->lang->line('success_update')];
+        } else {
+            $notify = ['status' => 'error', 'msg' => $this->lang->line('success_update')];
+        }
 
         $this->session->set_userdata('notify', $notify);
         redirect('admin/administrator', 'refresh');

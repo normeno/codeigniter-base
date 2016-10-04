@@ -8,6 +8,24 @@ class Uploader
     }
 
     /**
+     * Default config
+     *
+     * @param $config
+     * @return mixed
+     */
+    private function config_image($config)
+    {
+        $config['upload_path'] = empty($config['path']) ? './' : $config['path'];
+        $config['allowed_types'] = 'jpg|png|jpeg';
+        $config['max_size'] = isset($config['max_size']) ? $config['max_size'] : 8192;
+        $config['max_width'] = isset($config['max_width']) ? $config['max_width'] : 8192;
+        $config['max_height'] = isset($config['max_height']) ? $config['max_height'] : 768;
+        $config['encrypt_name'] = TRUE;
+
+        return $config;
+    }
+
+    /**
      * Upload an image to the server
      *
      * @param $nameFile
@@ -23,13 +41,18 @@ class Uploader
 
         if (!$this->ci->upload->do_upload($nameFile)) {
             $error = array('error' => $this->ci->upload->display_errors());
+
             $response['status'] = 0;
             $response['data'] = $error;
         } else {
             $data = $this->ci->upload->data();
+
             chmod($data['full_path'], 0664);
+
             $response['status'] = 1;
             $response['data'] = $data;
+
+            $this->compress_image($data['full_path'], $data['full_path']);
         }
 
         return $response;
@@ -80,16 +103,54 @@ class Uploader
         return $response;
     }
 
-    private function config_image($config)
+    /**
+     * Compress the image size Using Tinypng
+     * https://tinypng.com/developers
+     *
+     * @param $from
+     * @param null $to
+     * @return bool
+     */
+    protected function compress_image($from, $to)
     {
-        $config['upload_path'] = empty($config['path']) ? './' : $config['path'];
-        $config['allowed_types'] = 'jpg|png|jpeg';
-        $config['max_size'] = 8192;
-        $config['max_width'] = 8192;
-        $config['max_height'] = 768;
-        $config['encrypt_name'] = TRUE;
+        if (empty(getenv('TINYPNG'))) {
+            return false;
+        }
 
-        return $config;
+        \Tinify\setKey(getenv('TINYPNG'));
+
+        $sourceData = \Tinify\fromFile($from);
+        $sourceData->toFile($to);
+
+        chmod($to, 0664);
+    }
+
+    /**
+     * Resize imagen using Tinypng
+     * https://tinypng.com/developers
+     *
+     * @param $image
+     * @param string $method
+     * @param $width
+     * @return bool
+     */
+    public function resize_image($image, $method = 'scale', $width) {
+        if (empty(getenv('TINYPNG'))) {
+            return false;
+        }
+
+        \Tinify\setKey(getenv('TINYPNG'));
+
+        $source = \Tinify\fromFile($image);
+        $resized = $source->resize([
+            "method" => $method,
+            "width" => $width
+        ]);
+
+        $imgExplode = explode('.', $image);
+        $to = "{$imgExplode[0]}-$width.{$imgExplode[1]}";
+
+        $resized->toFile($to);
     }
 
 }

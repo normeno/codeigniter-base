@@ -39,6 +39,14 @@ class Migration_Create_modules extends CI_Migration
                 'unsigned' => true,
                 'null' => true,
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ]
         ));
 
         $this->dbforge->add_key('id', true);
@@ -58,11 +66,30 @@ class Migration_Create_modules extends CI_Migration
 
     public function insert_modules()
     {
-        $name  = ['administration', 'site', 'users', 'administrators', 'users', 'Dashboard'];
-        $route = ['#', 'admin/site/edit', '#', 'admin/administrator', 'admin/user', '#'];
-        $module = [null, 1, null, 3, 3, null];
-        $font = ['fa fa-unlock-alt', null, 'fa fa-users', null, null, 'fa fa-pie-chart'];
-        $priority = [2, null, 3, null, null, 1];
+        $name  = [
+            'administration', 'site', 'users', 'administrators', 'users', 'dashboard',
+            'groups'
+        ];
+
+        $route = [
+            '#', 'admin/site/edit', '#', 'admin/administrator', 'admin/user', '#',
+            'admin/group'
+        ];
+
+        $module = [
+            null, 1, null, 3, 3, null,
+            3
+        ];
+
+        $font = [
+            'fa fa-unlock-alt', null, 'fa fa-users', null, null, 'fa fa-pie-chart',
+            null
+        ];
+
+        $priority = [
+            2, null, 3, null, null, 1,
+            null
+        ];
 
         for ($i=0; $i<count($name); $i++) {
             $data[] = [

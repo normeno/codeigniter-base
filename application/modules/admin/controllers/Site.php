@@ -6,7 +6,8 @@ class Site extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('site_model', 'site');
+
+        parent::set_current_module(2);
     }
 
     /**
@@ -14,7 +15,7 @@ class Site extends Admin_Controller
      */
     public function edit()
     {
-        if (!$this->form_validation->run()) {
+        if ($this->form_validation->run('site/edit') == false) {
             $settings = $this->db->where('id', 1)->get('settings')->row();
             $this->render_view('site.edit', ['settings' => $settings]);
         } else {
@@ -35,7 +36,7 @@ class Site extends Admin_Controller
         ];
 
         if (!empty($_FILES) && (isset($_FILES['logo']) && !empty($_FILES['logo']['name']))) {
-            $data['logo'] = $this->site->setLogoAttribute($_FILES, $id);
+            $data['logo'] = $this->site->set_logo_attribute($_FILES, $id);
         }
 
         $this->site->update(1, $data);

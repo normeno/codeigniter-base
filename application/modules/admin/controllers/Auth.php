@@ -16,6 +16,7 @@ class Auth extends Admin_Controller
             $remember = $this->input->post('remember', true);
 
             if ($this->ion_auth->login($identity, $password, $remember)) {
+                parent::set_current_module(6);
                 parent::modules();
                 redirect('admin');
             } else {

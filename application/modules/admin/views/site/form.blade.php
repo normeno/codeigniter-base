@@ -65,6 +65,9 @@
 
 @push('scripts')
 <script>
+    var imgSource = "{{ isset($settings) && !is_null($settings->logo) ? $settings->logo : 'default-company.png' }}",
+            logo = "{{ base_url('assets/img/companies/') }}"+imgSource;
+
     $("#logo").fileinput({
         overwriteInitial: true,
         maxFileSize: 1500,
@@ -77,7 +80,7 @@
         removeTitle: '{{ $ci->lang->line('no_changes') }}',
         elErrorContainer: '#kv-avatar-errors-2',
         msgErrorClass: 'alert alert-block alert-danger',
-        defaultPreviewContent: '<img src="{{ base_url('assets/img/companies/default-company.png') }}" style="width:160px">' +
+        defaultPreviewContent: '<img src="'+logo+'" style="width:160px">' +
                                 '<h6 class="text-muted">{{ $ci->lang->line('click_to_select') }}</h6>',
         layoutTemplates: {main2: '{preview} {remove} {browse}'},
         allowedFileExtensions: ["jpg", "png", "jpeg"]

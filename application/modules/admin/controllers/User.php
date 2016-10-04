@@ -9,6 +9,8 @@ class User extends Admin_Controller
 
         $this->load->model('company_model', 'company');
         $this->load->model('user_model', 'user');
+
+        parent::set_current_module(5);
     }
 
     public function index()
@@ -38,10 +40,10 @@ class User extends Admin_Controller
         }
 
         $email = $this->input->post('email', true);
-        $username = $this->input->post('username', true);
         $password = $this->input->post('password', true);
 
         $additional_data = [
+            'username' => $this->input->post('username', true),
             'first_name' => $this->input->post('first_name', true),
             'last_name' => $this->input->post('last_name', true),
             'company_id' => $this->input->post('company', true),
@@ -49,18 +51,19 @@ class User extends Admin_Controller
             'avatar' => isset($avatar) && !is_null($avatar) ? $avatar : null
         ];
 
-        $group = ['3']; // Sets user to general user.
+        $group = ['3'];
 
-        $create = $this->user->register($username, $password, $email, $additional_data, $group);
+        $create = $this->user->insert([
+            'password' => $password,
+            'email' => $email,
+            'additional_data' => $additional_data,
+            'group' => $group
+        ]);
 
-        if($create) {
-            $now = date('Y-m-d H:i:s');
-            $this->user->update($create, ['created_at' => $now, 'updated_at' => $now]);
+        if($create)
             $notify = ['status' => 'success', 'msg' => $this->lang->line('success_create')];
-        }
-        else {
+        else
             $notify = ['status' => 'error', 'msg' => $this->lang->line('error_create')];
-        }
 
         $this->session->set_userdata('notify', $notify);
         redirect('admin/user', 'refresh');
@@ -80,9 +83,11 @@ class User extends Admin_Controller
 
     public function update($id)
     {
+        $username = $this->input->post('username', true);
+
         $data = [
             'email' => $this->input->post('email', true),
-            'username' => $this->input->post('username', true),
+            'username' => empty($username) ? null : $username,
             'first_name' => $this->input->post('first_name', true),
             'last_name' => $this->input->post('last_name', true),
             'company_id' => $this->input->post('company', true),
@@ -98,11 +103,9 @@ class User extends Admin_Controller
         if(!empty($password))
             $data['password'] = $password;
 
-        $update = $this->ion_auth->update($id, $data);
+        $update = $this->user->update($id, $data);
 
         if($update) {
-            $now = date('Y-m-d H:i:s');
-            $this->user->update($update, ['created_at' => $now, 'updated_at' => $now]);
             $notify = ['status' => 'success', 'msg' => $this->lang->line('success_update')];
         } else {
             $notify = ['status' => 'error', 'msg' => $this->lang->line('error_update')];

@@ -4,7 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang = [
     // Common
     'login' => 'Ingresar',
+    'sign_in' => 'Ingresar',
+    'login_to_platform' => 'Ingresar a la plataforma',
     'logout' => 'Salir',
+    'remember' => 'Recordar',
     'profile' => 'Perfil',
     'member_since' => 'Miembro desde',
     'dashboard' => 'Dashboard',
@@ -30,6 +33,17 @@ $lang = [
     'error_create' => 'Error al crear registro',
     'success_update' => 'Éxito al editar registro',
     'error_update' => 'Error al editar registro',
+    'role' => 'Rol',
+    'roles' => 'Roles',
+    'group' => 'Grupo',
+    'groups' => 'Grupos',
+    'name' => 'Nombre',
+    'description' => 'Descripción',
+    'not_editable' => 'Este campo no es editable',
+    'module' => 'Módulo',
+    'modules' => 'Módulos',
+    'forgot_password' => 'Olvidé Contraseña',
+    'logged_today' => 'Sesiones de hoy',
 
     // Upload image
     'no_changes' => 'Cancelar o reiniciar cambios',

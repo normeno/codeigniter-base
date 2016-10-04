@@ -31,9 +31,20 @@
 
 <link href="assets/bower/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" type="text/css" />
 
+@if($debugbar_renderer)
+    {!! $debugbar_renderer->renderHead() !!}
+@endif
 <style>
     .container {
         width: 100%;
+    }
+
+    .left-25 {
+        margin-left: 25px;
+    }
+
+    .top-10 {
+        margin-top: 10px;
     }
 </style>
 

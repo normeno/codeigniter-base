@@ -1,8 +1,8 @@
 <header class="main-header">
 
     <a href="#" class="logo">
-        <span class="logo-mini"><b>A</b>LT</span>
-        <span class="logo-lg"><b>Admin</b>LTE Laravel </span>
+        <span class="logo-mini">{{ $setting->short_name }}</span>
+        <span class="logo-lg">{{ $setting->full_name }}</span>
     </a>
 
     <nav class="navbar navbar-static-top" role="navigation">
@@ -102,18 +102,29 @@
                     </ul>
                 </li>
 
+                <li class="dropdown tasks-menu">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-globe"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header"><a href="{{ site_url('admin/set_lang/english') }}">English</a></li>
+                        <li class="header"><a href="{{ site_url('admin/set_lang/spanish') }}">Spanish</a></li>
+                    </ul>
+                </li>
+
                 <li class="dropdown user user-menu">
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="//lorempixel.com/100/100" class="user-image" alt="User Image"/>
+                        <img src="{{ $current_user->avatar }}" class="user-image" alt="User Image"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                         <span class="hidden-xs">{{ "{$current_user->first_name} {$current_user->last_name}" }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="//lorempixel.com/100/100" class="img-circle" alt="User Image" />
+                            <img src="{{ $current_user->avatar }}" class="img-circle" alt="User Image" />
                             <p>
                                 {{ "{$current_user->first_name} {$current_user->last_name}" }}
                                 <small>{{ $ci->lang->line('member_since') }} {{ gmdate("d-m-Y", $current_user->created_on) }}</small>

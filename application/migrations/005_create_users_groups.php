@@ -56,7 +56,8 @@ class Migration_Create_users_groups extends CI_Migration
                     'first_name' => $username[$i],
                     'last_name' => 'Krei',
                     'company_id' => 1,
-                    'phone' => '987654321'
+                    'phone' => '987654321',
+                    'avatar' => $i == 0 ? 'nicolas-ormeno.jpg' : null
                 ],
                 [$i+1]
             );

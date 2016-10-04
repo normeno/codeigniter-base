@@ -6,11 +6,17 @@ class Group extends Admin_Controller
     public function __construct()
     {
         parent::__construct();
+
+        $this->load->model('group_model', 'group');
+        $this->load->model('module_model', 'module');
+        $this->load->model('group_module_model', 'group_module');
+
+        parent::set_current_module(7);
     }
 
     public function index()
     {
-        $this->render_view('administrator.index', []);
+        $this->render_view('group.index', []);
     }
 
     /**
@@ -28,7 +34,10 @@ class Group extends Admin_Controller
         $this->form_validation->set_rules('phone', 'Phone', 'trim');
 
         if (!$this->form_validation->run()) {
-            $this->render_view('administrator.create', []);
+            $modules = $this->db->where('module_id IS NULL', null, false)->order_by('priority', 'ASC')->get('modules')->result();
+            echo $this->db->last_query();
+
+            $this->render_view('group.create', ['modules' => $modules]);
         } else {
             $this->store();
         }
@@ -57,20 +66,12 @@ class Group extends Admin_Controller
 
     public function edit($id)
     {
-        $this->form_validation->set_rules('company', 'Company', 'trim|required');
-        $this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
-        $this->form_validation->set_rules('last_name', 'Last Name', 'trim');
-        $this->form_validation->set_rules('username', 'Username', 'trim');
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'trim|min_length[6]|max_length[20]');
-        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|matches[password]');
-        $this->form_validation->set_rules('phone', 'Phone', 'trim');
+        if (!$this->form_validation->run('group/update')) {
+            $group = $this->group->get($id);
 
-        if (!$this->form_validation->run()) {
-            $id = $this->uri->segment(4);
-            $user = $this->ion_auth->user($id)->row();
-            $companies = $this->db->get('companies')->result();
-            $this->render_view('administrator.edit', ['id' => $id, 'user' => $user, 'companies' => $companies]);
+            $modules = parent::modules();
+
+            $this->render_view('group.edit', ['id' => $id, 'group' => $group, 'modules' => $modules]);
         } else {
             $this->update($id);
         }
@@ -78,34 +79,43 @@ class Group extends Admin_Controller
 
     public function update($id)
     {
-        $data = [
-            'email' => $this->input->post('email', true),
-            'username' => $this->input->post('username', true),
-            'first_name' => $this->input->post('first_name', true),
-            'last_name' => $this->input->post('last_name', true),
-            'company_id' => $this->input->post('company', true),
-            'phone' => $this->input->post('phone', true)
-        ];
+        // Update Group
+        $this->group->update($id, [
+            'name' => $this->input->post('name', true),
+            'description' => $this->input->post('description', true)
+        ]);
 
-        $password = $this->input->post('password', true);
-        if(!empty($password))
-            $data['password'] = $password;
+        // Delete all records by group
+        $gms = $this->group_module->get_many_by('group_id', $id);
 
-        $create = $this->ion_auth->update($id, $data);
+        foreach ($gms as $gm) {
+            $this->group_module->delete($gm->id);
+        }
 
-        var_dump($create);
+        // Insert new records
+        $modules = $this->input->post('modules', true);
+        if (!empty($modules)) {
+            foreach ($modules as $module) {
+                $this->group_module->insert([
+                    'group_id' => $id,
+                    'module_id' => $module
+                ]);
+            }
+        }
+
+        $notify = ['status' => 'success', 'msg' => $this->lang->line('success_update')];
+        $this->session->set_userdata('notify', $notify);
+        redirect('admin/group', 'refresh');
     }
 
     public function dataTable()
     {
-        $this->load->library('Datatable', ['model' => 'administrator_model', 'rowIdCol' => 'id']);
+        $this->load->library('Datatable', ['model' => 'group_datatable', 'rowIdCol' => 'id']);
 
-        $jsonArray = $this -> datatable -> datatableJson(array(
-            'active' => 'boolean'
-        ));
+        $jsonArray = $this->datatable->datatableJson();
 
-        $this -> output -> set_header("Pragma: no-cache");
-        $this -> output -> set_header("Cache-Control: no-store, no-cache");
-        $this -> output -> set_content_type('application/json') -> set_output(json_encode($jsonArray));
+        $this->output->set_header("Pragma: no-cache");
+        $this->output->set_header("Cache-Control: no-store, no-cache");
+        $this->output->set_content_type('application/json')->set_output(json_encode($jsonArray));
     }
 }

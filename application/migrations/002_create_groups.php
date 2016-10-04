@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Migration_Create_groups extends CI_Migration
 {
+    /**
+     * Up Table
+     */
     public function up()
     {
         $this->dbforge->add_field(array(
@@ -22,6 +25,14 @@ class Migration_Create_groups extends CI_Migration
                 'constraint' => '100',
                 'null' => false,
             ],
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ]
         ));
 
         $this->dbforge->add_key('id', true);
@@ -45,6 +56,9 @@ class Migration_Create_groups extends CI_Migration
         $this->db->insert_batch('groups', $data);
     }
 
+    /**
+     * Down table
+     */
     public function down()
     {
         $this->db->query('SET FOREIGN_KEY_CHECKS=0;');

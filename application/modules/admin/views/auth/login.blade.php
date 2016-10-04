@@ -9,7 +9,7 @@
     <div class="login-box">
 
         <div class="login-logo">
-            <a href="{{ site_url('home') }}"><b>Admin</b>LTE</a>
+            <a href="{{ site_url() }}"><b>Admin</b>LTE</a>
         </div>
 
         @if (validation_errors() || isset($errors))
@@ -17,7 +17,7 @@
         @endif
 
         <div class="login-box-body">
-            <p class="login-box-msg"> Sign In </p>
+            <p class="login-box-msg"> {{ $ci->lang->line('login_to_platform') }} </p>
             {!! form_open('admin/auth/login') !!}
                 <input type="hidden" name="_token" value="">
 
@@ -35,19 +35,19 @@
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox" name="remember"> Remember
+                                <input type="checkbox" name="remember"> {{ $ci->lang->line('remember') }}
                             </label>
                         </div>
                     </div>
 
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{ $ci->lang->line('sign_in') }}</button>
                     </div>
                 </div>
 
             {!! form_close() !!}
 
-            <a href="{{ site_url('/password/reset') }}">Forgot Password</a>
+            <a href="{{ site_url('/password/reset') }}">{{ $ci->lang->line('forgot_password') }}</a>
 
         </div><!-- /.login-box-body -->
 

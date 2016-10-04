@@ -3,27 +3,27 @@
 class Site_model extends MY_Model
 {
     public $_table = 'settings';
-    public $before_create = ['setCreatedAndUpdated'];
-    public $before_update = ['setUpdated'];
+    public $before_create = ['set_created_and_updated'];
+    public $before_update = ['set_updated'];
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    protected function setCreatedAndUpdated($user)
+    protected function set_created_and_updated($user)
     {
         $user['created_at'] = $user['updated_at'] = date('Y-m-d H:i:s');
         return $user;
     }
 
-    protected function setUpdated($user)
+    protected function set_updated($user)
     {
         $user['updated_at'] = date('Y-m-d H:i:s');
         return $user;
     }
 
-    public function setLogoAttribute($image, $id=null)
+    public function set_logo_attribute($image, $id=null)
     {
         if (!empty($image)) {
             $path = FCPATH.'assets/img/companies/';

@@ -4,7 +4,7 @@
 
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="//lorempixel.com/100/100" class="img-circle" alt="User Image" />
+                <img src="{{ $current_user->avatar }}" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
                 <p>{{ "{$current_user->first_name} {$current_user->last_name}" }}</p>
